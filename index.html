@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <title>Todos-app</title>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <h1 class="header__title">To-do App</h1>
+            <h2 class="header__subtitle">What do you need to do?</h2>
+        </div>
+    </div>
+
+    <div id="app">
+        <div class="actions">
+            <div class="actions__container">
+                <input v-model="filterTodoText" id="filter-todo" class="input" type="text" placeholder="Filter todos">
+                <label class="checkbox">
+                    <input id="hide-completed" type="checkbox">Hide completed
+                </label>
+            </div>
+        </div>
+        <div class="container">
+            <div id="todos">
+                <!-- Crea todo el HTML que esta dentro del v-for, tantas veces como elementos hay en el array 'todos' del estado de la app -->
+                <div v-for="todo in todos">
+                    <label :id="todo.id" :class="{'list-item__hide': !todo.text.includes(filterTodoText)}"
+                        class="list-item" @dblclick="toggleTodo(todo.id)">
+
+                        <!-- usad :class para agregar la clase 'list-item__done' en el caso que todo.isCompleted sea true-->
+                        <div :class="{'list-item__done': todo.isCompleted}" class="list-item__container">
+                            <span> {{ todo.text }} </span>
+                        </div>
+                        <span class="button button-text">Remove</span>
+                    </label>
+                </div>
+            </div>
+            <!-- Cuando se produzca el evento 'submit' ejecútame la función addTodo. Además, hazme un e.preventDefault()-->
+            <form @submit.prevent="addTodo" id="todo-form">
+                <input v-model="addTaskName" type="text" class="input" placeholder="New Todo" name="addTodo">
+                <!-- Cuando addTaskName este vacío, agrega la clase 'hide' a este input -->
+                <input :class="{'hide': addTaskName=='' }" type="submit" class="button" value="Add Todo">
+            </form>
+        </div>
+
+        <!-- Creadme aquí un <h2> que me muestre cuantos todos tengo en este momento -->
+        <h2 v-if="todos.length > 0">You have {{ todos.length }} todos</h2>
+        <h2 v-else> You don't todos yet!! </h2>
+    </div>
+
+    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
